@@ -1,0 +1,88 @@
+import java.applet.Applet;
+import java.util.Calendar;
+import java.awt.*;
+public class analogclock extends Applet implements Runnable{
+    Thread t=null;
+    int x=300,y=300;
+    double angle,hrX,hrY,minX,minY,secX,secY;
+    int hr,min,sec;
+
+        public void init() {
+        setSize(new Dimension(600,600));          
+    }
+        public void start()
+        {
+            t=new Thread(this);
+            t.start();
+        }
+        public void run()
+        {
+            try
+            {
+                while(true)
+                {
+                    Time();
+                    
+                    //hour
+                    angle=180-(hr*30);
+                    angle=angle*Math.PI/180;
+                    hrX=x+170*Math.sin(angle);
+                    hrY=y+170*Math.cos(angle);
+                    
+                    //minutes
+                    angle=180-(min*6);
+                    angle=angle*Math.PI/180;
+                    minX=x+190*Math.sin(angle);
+                    hrY=y+190*Math.cos(angle);
+                    
+                     //seconds
+                    angle=180-(sec*4);
+                    angle=angle*Math.PI/180;
+                    secX=x+190*Math.sin(angle);
+                    secY=y+190*Math.cos(angle);
+                    
+                    repaint();
+                    t.sleep(1000);                                        
+                }
+            }
+            catch(Exception e){}
+                }
+        
+        public void paint(Graphics g)
+        {
+            setBackground(new Color(36,36,36));
+            
+             g.setColor(Color.red);
+             Graphics2D g2=(Graphics2D)g;
+             
+             g2.setStroke(new BasicStroke(16));
+             g.drawOval(90, 90, 420, 420);
+             
+              g.setColor(Color.MAGENTA);
+             g.drawLine(x, y, (int)hrX, (int)hrY);
+            
+           
+            g2.setStroke(new BasicStroke(8));
+            g.drawLine(x, y, (int)minX, (int)minY);
+            
+            g.setColor(Color.orange);
+            g2.setStroke(new BasicStroke(4));
+            g.drawLine(x, y, (int)secX, (int)secY);
+            
+        }
+        public void Time()
+        {
+            Calendar cal=Calendar.getInstance();
+            hr=cal.get(Calendar.HOUR_OF_DAY);
+            if(hr>12)hr-=12;
+            min=cal.get(Calendar.MINUTE);
+            sec=cal.get(Calendar.SECOND);
+            
+            
+        }
+        
+        
+}
+
+   
+
